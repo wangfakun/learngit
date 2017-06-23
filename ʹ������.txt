@@ -1,0 +1,70 @@
+﻿$ mkdir learngit #创建仓库
+$ cd learngit 
+$ pwd
+/Users/michael/learngit
+
+$ git init #初始化仓库
+Initialized empty Git repository in /Users/michael/learngit/.git/
+
+
+git add readme.txt #添加文件
+
+git commit -m "wrote a readme file"  #提交文件
+[master (root-commit) cb926e7] wrote a readme file
+ 1 file changed, 2 insertions(+)
+ create mode 100644 readme.txt
+ 
+ git diff file  #比较文件是否有修改，比较差异，采用合并的方式比较，参考linux操作的diff命令格式
+ 
+ git status #查看当前仓库的状态
+ 
+git log #查看提交历史
+ commit bade7a688c629905acacdd0462db99684b038657
+Author: wangfakun <449288317@qq.com>
+Date:   Thu Jun 22 17:14:33 2017 +0800
+
+    add a line
+
+commit cbcf7aaec49d1a9de5a8d9a79f9bfdf7a717a7fa
+Author: wangfakun <449288317@qq.com>
+Date:   Thu Jun 22 14:53:25 2017 +0800
+
+    create a readme file to write subject
+	
+	
+ git log --pretty=oneline # 用一行显示提交历史
+ bade7a688c629905acacdd0462db99684b038657 add a line
+ cbcf7aaec49d1a9de5a8d9a79f9bfdf7a717a7fa create a readme file to write subject
+ 
+ git reset --hard HEAD^ #退回上一版本 HEAD^ 上一版本 HEAD^^上上一版本 HEAD~100 回退一百个版本
+ 
+ git reset --hard 3628164 #如果发现回退错了，又要返回前一版本，且这个时候当前版本的ID还可以查的到
+ 
+ git reflog #如果查不到ID 则可以根据这个命令来查到版本ID,然后再执行恢复。
+ 
+ git diff file  #比较文件是否有修改，比较差异，采用合并的方式比较，参考linux操作的diff命令格式 比较的是工作区和暂存库内或者版本库的差异
+                #这个要看情况，如果暂存区没有，则和版本库内比较，如果暂存区有，则和暂存区比较
+ 
+ git diff --cached #比较暂存区和版本库的内容
+ 
+ git diff HEAD -- OrderServerImpl.java #比较最新版本库里面的与工作区的区别 
+ 
+ git diff 3628dwerv -- OrderServerImpl.java #比较版本库里面的某个版本与工作区的区别
+ 
+ git checkout -- readme.txt  #如果工作区域的版本与暂存区的版本不一致，直接恢复回暂存区的版本  如果工作区域的没有提交到暂存区，即暂存区的该文件为空，恢复之后的是版本库内的版本
+ 
+ git reset HEAD file #如果已经提交到了暂存区，但是还没有提交到版本库，这个时候想回退暂存区的，可以使用这个命令，但是如果还想进一步回退到版本库一样的版本，还要用 git checkout -- file
+ 
+ #本地git与gitbub之间建立关联，github是一个远程公共的git服务器 过程如下
+ 1、在本地查看自己服务器是否有公私钥 如果没有，则建立公私钥
+    ssh-keygen -t rsa -C "449288317@qq.com" #使用自己的邮箱
+ 2、导入公钥到github
+ 3、在github中创建和你本地仓库一样的名称库
+ 4、在本地运行 git remote add origin git@github.com:wangfakun/learngit.git 记住，要将wangfakun改成自己的用户名 本本地与远程建立关联
+ 5、git push -u origin master 初次同步本地版本库的文件到远程
+ 6、git push origin master 同步本地版本库的文件到远程
+ 
+ 
+ 
+ 
+ 
