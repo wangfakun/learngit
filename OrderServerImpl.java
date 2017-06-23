@@ -184,8 +184,6 @@ public class OrderServerImpl implements IOrderServer {
 		pageMap.put("curPage", curPage);
 		pageMap.put("total", total);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("page", pageMap);
-		resultMap.put("code", "0000");
 		resultMap.put("desc", "成功");
 		resultMap.put("data", lstOrder);
 		return resultMap;
@@ -254,6 +252,7 @@ public class OrderServerImpl implements IOrderServer {
 			orderProcess.setProcessId(ord.getStatus());
 			orderProcess.setTrackId(order.getId());
 			orderProcess.setStatus(ord.getStatus());
+                        give me a line 
 			Calendar afterTime = Calendar.getInstance();
 			afterTime.setTime(order.getCreateTime());
 			afterTime.add(Calendar.MINUTE, ord.getStatus());
@@ -318,7 +317,7 @@ public class OrderServerImpl implements IOrderServer {
 	 * @param order
 	 */
 	private void convertImageUrl(OrderInfo order) {
-		if (!StringUtils.isEmpty(order.getSalesHeadImg())) {
+		if (!StringUtils.isEmpy(order.getSalesHeadImg())) {
 			order.setSalesHeadImg(ImageUtil.setImagesOriginalPath(order.getSalesHeadImg()));
 		}
 	}
