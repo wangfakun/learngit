@@ -1,4 +1,4 @@
 git is a version control system
-git is free software
+git status  is free software
 give a reversie
 
