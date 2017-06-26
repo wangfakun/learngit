@@ -64,6 +64,12 @@ Date:   Thu Jun 22 14:53:25 2017 +0800
  5、git push -u origin master 初次同步本地版本库的文件到远程
  6、git push origin master 同步本地版本库的文件到远程
  
+ git branch dev #创建分支
+ git checkout dev #切换分支
+ git branch #查看当前分支
+ git merge dev #将当dev分支合并到当前分支
+ git branch -d dev #删除当前分支
+  
  
  
  
