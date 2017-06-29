@@ -69,8 +69,12 @@ Date:   Thu Jun 22 14:53:25 2017 +0800
  git branch #查看当前分支
  git merge dev #将当dev分支合并到当前分支
  git branch -d dev #删除当前分支
-  
  
- 
+ #解决冲突
+ git merge feature1 
+Auto-merging readme.txt
+CONFLICT (content): Merge conflict in readme.txt
+Automatic merge failed; fix conflicts and then commit the result. #表明是需要去手动解决冲突的，这个时候本地的分支文件已经有了修改，去解决冲突
+ 解决完后去正常提交，则直接进入了下一个罪行的状态了
  
  
