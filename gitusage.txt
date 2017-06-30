@@ -86,5 +86,5 @@ Automatic merge failed; fix conflicts and then commit the result. #表明是需�
 #
 在实际使用merge合并分支的时候，尽量选择no Faster forward  --no-ff 模式
 
-
-
+#强行删除掉分支
+git  branch -D feature-vulcan
