@@ -77,6 +77,18 @@ CONFLICT (content): Merge conflict in readme.txt
 Automatic merge failed; fix conflicts and then commit the result. #表明是需要去手动解决冲突的，这个时候本地的分支文件已经有了修改，去解决冲突
  解决完后去正常提交，则直接进入了下一个罪行的状态了
  
+
+#在实际开发中，我们应该按照几个基本原则进行分支管理：
+首先，master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活；
+那在哪干活呢？干活都在dev分支上，也就是说，dev分支是不稳定的，到某个时候，比如1.0版本发布时，再把dev分支合并到master上，在master分支发布1.0版本；
+你和你的小伙伴们每个人都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了。
+所以，团队合作的分支看起来就像这样： 
+
+#
+在实际使用merge合并分支的时候，尽量选择no Faster forward  --no-ff 模式
+
+#强行删除掉分支
+git  branch -D feature-vulcan
 #中途git暂存栈
 在开发的过程中 ，通常我们是在dev上开发，因为线上bug出现了需要紧急修复的情况，则需要先将已经正在开发中的任务暂存，即找个地方存下，恢复工作现场到版本库状态，则使用stash
 git stash #恢复现场，暂存已经开发的到git栈中
@@ -85,6 +97,7 @@ git stash pop #从git栈中恢复并且删除最近一次暂存栈
 git stash apply #从git栈中恢复 默认是第一个 如果需要查询stash git栈中的其他版本，则可以使用git stash list 查询名字，然后使用 git stash apply filename；
 git stash drop #删除某个栈
 git stash clear #清楚所有的栈版本 
+<<<<<<< HEAD
 
 #正常的多人工作的流程
 
@@ -96,11 +109,123 @@ git stash clear #清楚所有的栈版本
 如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream branch-name origin/branch-name。
 这就是多人协作的工作模式，一旦熟悉了，就非常简单。
 
-注意点
+
+
+
 查看远程库信息，使用git remote -v；
 本地新建的分支如果不推送到远程，对其他人就是不可见的；
 从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
 在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
-建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name
+建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
 从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
+
+
+命令git tag <name>用于新建一个标签，默认为HEAD，也可以指定一个commit id；如 git tag v0.9 6224937
+git tag -a <tagname> -m "blablabla..."可以指定标签信息；
+git tag -s <tagname> -m "blablabla..."可以用PGP签名标签；
+命令git tag可以查看所有标签。
+
+git tag -d v1.0 #删除分支
+git push origin <tagname>可以推送一个本地标签；
+命令git push origin --tags可以推送全部未推送过的本地标签；
+命令git tag -d <tagname>可以删除一个本地标签；
+命令git push origin :refs/tags/<tagname>可以删除一个远程标签。
+
+如何参与开源项目
+在GitHub上，可以任意Fork开源仓库；
+自己拥有Fork后的仓库的读写权限；然后同步到本地仓库 ，修改代码 提交到自己的远程仓库
+可以推送pull request给官方仓库来贡献代码。
+
+
+如何在工作目录忽略文件，不要提交至仓库
+gitignore文件，内容如下：
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Python:
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+dist
+build
+
+# My configurations:
+db.ini
+deploy_key_rsa
+
+在Git考虑到了大家的感受，这个问题解决起来也很简单，在Git工作区的根目录下创建一个特殊的.gitignore文件，然后把要忽略的文件名填进去，Git就会自动忽略这些文件。
+不需要从头写.gitignore文件，GitHub已经为我们准备了各种配置文件，只需要组合一下就可以使用了。所有配置文件可以直接在线浏览：https://github.com/github/gitignore
+
+有些时候，你想添加一个文件到Git，但发现添加不了，原因是这个文件被.gitignore忽略了：
+如果你确实想添加该文件，可以用-f强制添加到Git：
+$ git add -f App.class
+或者你发现，可能是.gitignore写得有问题，需要找出来到底哪个规则写错了，可以用git check-ignore命令检查：
+$ git check-ignore -v App.class
+.gitignore:3:*.class    App.class
+Git会告诉我们，.gitignore的第3行规则忽略了该文件，于是我们就可以知道应该修订哪个规则。
+
+
+
+
+
+创建git服务器
+第一步，安装git：
+
+$ sudo apt-get install git
+第二步，创建一个git用户，用来运行git服务：
+
+$ sudo adduser git
+第三步，创建证书登录：
+
+收集所有需要登录的用户的公钥，就是他们自己的id_rsa.pub文件，把所有公钥导入到/home/git/.ssh/authorized_keys文件里，一行一个。
+
+第四步，初始化Git仓库：
+
+先选定一个目录作为Git仓库，假定是/srv/sample.git，在/srv目录下输入命令：
+
+$ sudo git init --bare sample.git
+Git就会创建一个裸仓库，裸仓库没有工作区，因为服务器上的Git仓库纯粹是为了共享，所以不让用户直接登录到服务器上去改工作区，并且服务器上的Git仓库通常都以.git结尾。然后，把owner改为git：
+
+$ sudo chown -R git:git sample.git
+第五步，禁用shell登录：
+
+出于安全考虑，第二步创建的git用户不允许登录shell，这可以通过编辑/etc/passwd文件完成。找到类似下面的一行：
+
+git:x:1001:1001:,,,:/home/git:/bin/bash
+改为：
+
+git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
+这样，git用户可以正常通过ssh使用git，但无法登录shell，因为我们为git用户指定的git-shell每次一登录就自动退出。
+
+第六步，克隆远程仓库：
+
+现在，可以通过git clone命令克隆远程仓库了，在各自的电脑上运行：
+
+$ git clone git@server:/srv/sample.git
+Cloning into 'sample'...
+warning: You appear to have cloned an empty repository.
+剩下的推送就简单了。
+
+管理公钥
+
+如果团队很小，把每个人的公钥收集起来放到服务器的/home/git/.ssh/authorized_keys文件里就是可行的。如果团队有几百号人，就没法这么玩了，这时，可以用Gitosis来管理公钥。
+
+这里我们不介绍怎么玩Gitosis了，几百号人的团队基本都在500强了，相信找个高水平的Linux管理员问题不大。
+
+管理权限
+
+有很多不但视源代码如生命，而且视员工为窃贼的公司，会在版本控制系统里设置一套完善的权限控制，每个人是否有读写权限会精确到每个分支甚至每个目录下。因为Git是为Linux源代码托管而开发的，所以Git也继承了开源社区的精神，不支持权限控制。不过，因为Git支持钩子（hook），所以，可以在服务器端编写一系列脚本来控制提交等操作，达到权限控制的目的。Gitolite就是这个工具。
+
+这里我们也不介绍Gitolite了，不要把有限的生命浪费到权限斗争中。
+
+小结
+
+搭建Git服务器非常简单，通常10分钟即可完成；
+
+要方便管理公钥，用Gitosis；
+
+要像SVN那样变态地控制权限，用Gitolite。
 
